@@ -1,5 +1,6 @@
 'use strict'
 const crypto = require('crypto')
+const moment = require('moment')
 const User = use('App/Models/User')
 const Mail = use('Mail')
 
@@ -35,6 +36,38 @@ class ForgotPasswordController {
         .send({
           error: true,
           message: 'email não encontrado'
+        })
+    }
+  }
+
+  async update ({ request, response }) {
+    try {
+      const { token, password } = request.only(['token', 'password'])
+      const user = await User.findByOrFail('token', token)
+      const tokenExpired = moment()
+        .subtract('2', 'days')
+        .isAfter(user.token_created_at)
+
+      if (tokenExpired) {
+        return response
+          .status(401)
+          .send({
+            error: true,
+            message: 'token expirado'
+          })
+      } else {
+        user.token = null
+        user.token_created_at = null
+        user.password = password
+
+        await user.save()
+      }
+    } catch (err) {
+      return response
+        .status(err.status)
+        .send({
+          error: true,
+          message: 'token não encontrado'
         })
     }
   }
