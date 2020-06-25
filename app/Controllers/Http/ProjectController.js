@@ -11,7 +11,8 @@ const Project = use('App/Models/Project')
  */
 class ProjectController {
   async index ({ request, response, view }) {
-    const projetos = await Project.query().with('user').fetch()
+    const { page = 1 } = request.get()
+    const projetos = await Project.query().with('user').paginate(page)
     return projetos
   }
 

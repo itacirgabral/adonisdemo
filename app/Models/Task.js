@@ -4,6 +4,11 @@
 const Model = use('Model')
 
 class Task extends Model {
+  static boot () {
+    super.boot()
+    this.addHook('afterSave', 'TaskHook.sendNewTaskMail')
+  }
+
   user () {
     return this.belongsTo('App/Models/User')
   }
