@@ -1,5 +1,7 @@
 'use strict'
 
+const Antl = use('Antl')
+
 class ForgotSession {
   get validateAll () {
     return true
@@ -10,6 +12,10 @@ class ForgotSession {
       // redirect_url: 'required|url',
       email: 'required|email'
     }
+  }
+
+  get messages () {
+    return Antl.list('validation')
   }
 }
 
