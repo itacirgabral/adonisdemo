@@ -20,12 +20,12 @@ const Route = use('Route')
 
 Route.get('/', () => ({ greeting: 'Hello world in JSON' }))
 
-Route.post('users', 'UserController.store')
+Route.post('users', 'UserController.store').validator('User')
 
-Route.post('sessions', 'SessionController.store')
+Route.post('sessions', 'SessionController.store').validator('Session')
 
-Route.post('forgotpassword', 'ForgotPasswordController.store')
-Route.put('forgotpassword', 'ForgotPasswordController.update')
+Route.post('forgotpassword', 'ForgotPasswordController.store').validator('ForgotSession')
+Route.put('forgotpassword', 'ForgotPasswordController.update').validator('ResetSession')
 
 Route.post('forgotpassword', 'ForgotPasswordController.store')
 
@@ -33,5 +33,6 @@ Route.group(() => {
   Route.get('files/:id', 'FileController.show')
   Route.post('files', 'FileController.store')
 
-  Route.resource('projects', 'ProjectController').apiOnly()
+  Route.resource('projects', 'ProjectController').apiOnly().validator(new Map([[['projects.store'], ['Project']]]))
+  Route.resource('projects.tasks', 'TaskController').apiOnly().validator(new Map([[['projects.tasks.store'], ['Task']]]))
 }).middleware(['auth'])

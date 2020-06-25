@@ -30,7 +30,7 @@ class TaskSchema extends Schema {
         .onDelete('SET NULL')
       table.string('title').notNullable()
       table.string('description')
-      table.timestamp('due_data')
+      table.timestamp('due_date')
       table.timestamps()
     })
   }
