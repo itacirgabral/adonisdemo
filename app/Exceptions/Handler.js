@@ -51,7 +51,8 @@ class ExceptionHandler extends BaseExceptionHandler {
    * @return {void}
    */
   async report (error, { request }) {
-
+    console.error({ error, request })
+    // use o sentry, sqn
   }
 }
 
